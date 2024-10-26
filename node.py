@@ -1,6 +1,7 @@
 """
 This file defines the Node class for our program.
 """
+from terrain import Terrain
 
 class Node:
     """
@@ -9,7 +10,8 @@ class Node:
     state: int
     temp: float
     elevation: int
-    type: str
+    fuel: float
+    type: Terrain
     neighbours = set
 
     def __init__(self, state, temp, elevation, type, neighbours):
@@ -18,6 +20,10 @@ class Node:
         self.type = type
         self.state = state
         self.neighbours = neighbours
+        self.setFuel()
+
+    def setFuel(self):
+        self.fuel = Terrain.fuel
 
     def update(self):
         """
