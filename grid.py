@@ -2,42 +2,39 @@ import matplotlib as mpl
 from fontTools.merge import cmap
 from matplotlib import pyplot, pyplot as plt, colors
 import numpy as np
-
-"Grid of the simulation"
+from node import Node
 
 class Grid:
     def __init__(self, row, column):
         self.row = row
         self.column = column
+        self.grid = [[Node(0) for _ in range(self.column)] for _ in range(self.row)]
+        #lightgrey 0 = not burning, black 1 = burnt
+        self.cmap = colors.ListedColormap(["lightgrey", "black"])
+        self.bounds = [0,1]
+        self.norm = colors.BoundaryNorm(self.bounds, self.cmap.N)
 
-    def create_grid(self):
-        # Create a row x column grid with all values set to a single level
-        data = np.zeros((self.row, self.column))
+    def update_node(self, row, column, state):
+        self.grid[row][column].state = state
 
-        # Set up the colormap with a single default color
-        cmap = colors.ListedColormap(['lightgray'])
-        bounds = [0, 1]  # Boundaries for single color
-        norm = colors.BoundaryNorm(bounds, cmap.N)
-
-        # Plot the initial grid with one color
+    def display_grid(self):
+        data = np.zeros((self.row, self.column), dtype=int)
+        for i in range(self.row):
+            for j in range(self.column):
+                data[i][j] = self.grid[i][j].state
         fig, ax = plt.subplots()
-        ax.imshow(data, cmap=cmap, norm=norm)
+        cax = ax.imshow(data, cmap=self.cmap, norm=self.norm,aspect='equal')
+        ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=1)
+        plt.xticks(np.arange(-.5, self.column, 1), [])
+        plt.yticks(np.arange(-.5, self.row, 1), [])
 
-        # Draw gridlines for clarity
-        ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=0.5)
-        ax.set_xticks(np.arange(0, self.column, 10))
-        ax.set_yticks(np.arange(0, self.row, 10))
-
-        ax.set_xticklabels([])
-        ax.set_yticklabels([])
-
-        ax.tick_params(axis='both', direction='in', length=1, pad=3, which='major')
 
         plt.show()
 
-        # Later on, to change colors, you can update `data` with new values
-        # and replot with a new colormap or colors for each value.
+ngrid = Grid(10,10)
+ngrid.update_node(5, 5, 1)  # Set state to 1 (active)
+ngrid.update_node(5, 6, 1)  # Set state to 2 (burning)
+ngrid.update_node(5, 7, 0)
 
-ngrid = Grid(500,500)
-ngrid.create_grid()
 
+ngrid.display_grid()
