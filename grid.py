@@ -7,10 +7,6 @@ from road import Road
 import random
 from simulate import simulate_fire
 
-def grid_reset(grid, row, column):
-    grid = [[Node(0, random.choice([self.forest]), 30) for _ in range(self.column)]
-    for _ in range(row)]
-
 class Grid:
     def __init__(self, row, column):
         self.row = row
@@ -46,6 +42,7 @@ class Grid:
         ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=1)
         plt.xticks(np.arange(-0.5, self.column, 1), [])
         plt.yticks(np.arange(-0.5, self.row, 1), [])
+        ax.tick_params(axis='both', direction='in', length=5, pad=3, which='major')
 
         # Create a list to store text objects
         self.texts = []
@@ -66,16 +63,6 @@ class Grid:
             simulate_fire(self.grid, {(5, 5)})
 
             print("temp is", self.grid[5][4].temp)
-
-            
-            # Randomly set some forest nodes to burning
-            """
-            for _ in range(5):  # Number of cells to change per frame
-                row, col = random.randint(0, self.row - 1), random.randint(0, self.column - 1)
-                if self.grid[row][col].type == self.forest and self.grid[row][col].state == 0:
-                    self.update_node(row, col, 1)  # Change state to burning
-            """
-            
 
             # Update the image and the text based on the new data
             cax.set_array(self.get_data())
