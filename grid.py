@@ -31,6 +31,8 @@ class Grid:
         ax.set_xticklabels([])
         ax.set_yticklabels([])
 
+        ax.tick_params(axis='both', direction='in', length=1, pad=3, which='major')
+
         plt.show()
 
         # Later on, to change colors, you can update `data` with new values
