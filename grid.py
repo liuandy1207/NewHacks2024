@@ -5,7 +5,11 @@ from node import Node
 from forest import Forest
 from road import Road
 import random
+from simulate import simulate_fire
 
+def grid_reset(grid, row, column):
+    grid = [[Node(0, random.choice([self.forest]), 30) for _ in range(self.column)]
+    for _ in range(row)]
 
 class Grid:
     def __init__(self, row, column):
@@ -13,7 +17,7 @@ class Grid:
         self.column = column
         self.forest = Forest()
         self.road = Road()
-        self.grid = [[Node(0, random.choice([self.forest])) for _ in range(self.column)]
+        self.grid = [[Node(0, random.choice([self.forest]), 30) for _ in range(self.column)]
                      for _ in range(self.row)]
 
         # Define colormap
@@ -57,11 +61,21 @@ class Grid:
 
         # Animation update function
         def update(frame):
+            self.grid[5][5].temp = 300
+            self.grid[5][5].state = 1
+            simulate_fire(self.grid, {(5, 5)})
+
+            print("temp is", self.grid[5][4].temp)
+
+            
             # Randomly set some forest nodes to burning
+            """
             for _ in range(5):  # Number of cells to change per frame
                 row, col = random.randint(0, self.row - 1), random.randint(0, self.column - 1)
                 if self.grid[row][col].type == self.forest and self.grid[row][col].state == 0:
                     self.update_node(row, col, 1)  # Change state to burning
+            """
+            
 
             # Update the image and the text based on the new data
             cax.set_array(self.get_data())
