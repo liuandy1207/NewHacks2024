@@ -14,10 +14,10 @@ class Node:
     type: Terrain
     neighbours = set
 
-    def __init__(self, state):
+    def __init__(self, state, type):
         '''self.temp = temp
-        self.elevation = elevation
-        self.type = type'''
+        self.elevation = elevation'''
+        self.type = type
         self.state = state
         '''self.neighbours = neighbours
         self.setFuel()'''
