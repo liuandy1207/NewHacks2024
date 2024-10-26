@@ -1,14 +1,22 @@
-from matplotlib import pyplot, pyplot as plt, colors
+from matplotlib import pyplot as plt, colors
+from matplotlib.animation import FuncAnimation
 import numpy as np
 from node import Node
-import matplotlib.image as mpimg
+from forest import Forest
+from road import Road
+import random
+
 
 class Grid:
     def __init__(self, row, column):
         self.row = row
         self.column = column
-        self.grid = [[Node(0) for _ in range(self.column)] for _ in range(self.row)]
-        #lightgrey 0 = not burning, red 1 = burnt
+        self.forest = Forest()
+        self.road = Road()
+        self.grid = [[Node(0, random.choice([self.forest])) for _ in range(self.column)]
+                     for _ in range(self.row)]
+
+        # Define colormap
         self.cmap = colors.ListedColormap(["lightgrey", "red"])
         self.bounds = [0, 1]
         self.norm = colors.BoundaryNorm(self.bounds, self.cmap.N)
@@ -16,38 +24,60 @@ class Grid:
     def update_node(self, row, column, state):
         self.grid[row][column].state = state
 
-    def display_grid(self):
-        fig, ax = plt.subplots()
+    def get_data(self):
+        # Create a 2D array with the state of each node
         data = np.zeros((self.row, self.column), dtype=int)
-
         for i in range(self.row):
             for j in range(self.column):
                 data[i][j] = self.grid[i][j].state
-        ax.imshow(data, cmap=self.cmap, norm=self.norm, aspect='equal')
+        return data
 
+    def display_grid(self):
+        # Initial setup of the plot
+        fig, ax = plt.subplots()
+        data = self.get_data()
+        cax = ax.imshow(data, cmap=self.cmap, norm=self.norm, aspect='equal')
+
+        # Customize grid
+        ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=1)
+        plt.xticks(np.arange(-0.5, self.column, 1), [])
+        plt.yticks(np.arange(-0.5, self.row, 1), [])
+
+        # Create a list to store text objects
+        self.texts = []
         for i in range(self.row):
             for j in range(self.column):
-                if self.grid[i][j].state == 1:
-                    ax.text(j, i, "B", ha='center', va='center', color="white", fontsize=12, fontweight="bold")
+                if self.grid[i][j].type == self.forest:
+                    text = ax.text(j, i, "F", ha='center', va='center', color='black', fontsize=12,
+                                   fontweight='bold')
                 else:
-                    ax.text(j, i, "W", ha='center', va='center', color="white", fontsize=12, fontweight="bold")
+                    text = ax.text(j, i, "R", ha='center', va='center', color='black', fontsize=12,
+                                   fontweight='bold')
+                self.texts.append(text)
 
-        #cax = ax.imshow(data, cmap=self.cmap, norm=self.norm,aspect='equal')
-        ax.grid(which='major', axis='both',
-                linestyle='-', color='k', linewidth=1)
-        plt.xticks(np.arange(-.5, self.column, 1), [])
-        plt.yticks(np.arange(-.5, self.row, 1), [])
+        # Animation update function
+        def update(frame):
+            # Randomly set some forest nodes to burning
+            for _ in range(5):  # Number of cells to change per frame
+                row, col = random.randint(0, self.row - 1), random.randint(0, self.column - 1)
+                if self.grid[row][col].type == self.forest and self.grid[row][col].state == 0:
+                    self.update_node(row, col, 1)  # Change state to burning
 
+            # Update the image and the text based on the new data
+            cax.set_array(self.get_data())
+            for i, text in enumerate(self.texts):
+                row = i // self.column
+                col = i % self.column
+                # Keep letters visible even if the state is burning
+                text.set_text("F" if self.grid[row][col].type == self.forest else "R")
 
-        ax.set_xticklabels([])
-        ax.set_yticklabels([])
+            return [cax] + self.texts
 
+        # Set up animation
+        ani = FuncAnimation(fig, update, frames=100, interval=200, blit=True)
         plt.show()
-"""Testing the grid"""
-ngrid = Grid(10,10)
-ngrid.update_node(5, 5, 1)  # Set state to 1 (active)
-ngrid.update_node(5, 6, 1)  # Set state to 2 (burning)
-ngrid.update_node(5, 7, 1)
 
 
+# Create and animate the grid
+ngrid = Grid(10, 10)
 ngrid.display_grid()
