@@ -42,6 +42,7 @@ class Grid:
         ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=1)
         plt.xticks(np.arange(-0.5, self.column, 1), [])
         plt.yticks(np.arange(-0.5, self.row, 1), [])
+        ax.tick_params(axis="both", direction='in',length=5, pad=3, which='major' )
 
         # Create a list to store text objects
         self.texts = []
