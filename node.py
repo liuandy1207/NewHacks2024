@@ -14,18 +14,18 @@ class Node:
     type: Terrain
     neighbours = set
 
-    def __init__(self, state, temp, elevation, type, neighbours):
-        self.temp = temp
-        self.elevation = elevation
+    def __init__(self, state, type):
+        '''self.temp = temp
+        self.elevation = elevation'''
         self.type = type
         self.state = state
-        self.neighbours = neighbours
-        self.setFuel()
+        '''self.neighbours = neighbours
+        self.setFuel()'''
 
-    def setFuel(self):
-        self.fuel = Terrain.fuel
+    '''def setFuel(self):
+        self.fuel = Terrain.fuel'''
 
-    def update(self):
+    '''def update(self):
         """
         Update current node based on the state of neighbouring nodes using Game of Life rules.
         """
@@ -39,4 +39,4 @@ class Node:
                 self.state = 1
         else:
             if burningNeighbours < 2 or burningNeighbours > 3:
-                self.state = 0
+                self.state = 0'''

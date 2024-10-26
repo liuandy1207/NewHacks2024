@@ -1,43 +1,83 @@
-import matplotlib as mpl
-from fontTools.merge import cmap
-from matplotlib import pyplot, pyplot as plt, colors
+from matplotlib import pyplot as plt, colors
+from matplotlib.animation import FuncAnimation
 import numpy as np
+from node import Node
+from forest import Forest
+from road import Road
+import random
 
-"Grid of the simulation"
 
 class Grid:
     def __init__(self, row, column):
         self.row = row
         self.column = column
+        self.forest = Forest()
+        self.road = Road()
+        self.grid = [[Node(0, random.choice([self.forest])) for _ in range(self.column)]
+                     for _ in range(self.row)]
 
-    def create_grid(self):
-        # Create a row x column grid with all values set to a single level
-        data = np.zeros((self.row, self.column))
+        # Define colormap
+        self.cmap = colors.ListedColormap(["lightgrey", "red"])
+        self.bounds = [0, 1]
+        self.norm = colors.BoundaryNorm(self.bounds, self.cmap.N)
 
-        # Set up the colormap with a single default color
-        cmap = colors.ListedColormap(['lightgray'])
-        bounds = [0, 1]  # Boundaries for single color
-        norm = colors.BoundaryNorm(bounds, cmap.N)
+    def update_node(self, row, column, state):
+        self.grid[row][column].state = state
 
-        # Plot the initial grid with one color
+    def get_data(self):
+        # Create a 2D array with the state of each node
+        data = np.zeros((self.row, self.column), dtype=int)
+        for i in range(self.row):
+            for j in range(self.column):
+                data[i][j] = self.grid[i][j].state
+        return data
+
+    def display_grid(self):
+        # Initial setup of the plot
         fig, ax = plt.subplots()
-        ax.imshow(data, cmap=cmap, norm=norm)
+        data = self.get_data()
+        cax = ax.imshow(data, cmap=self.cmap, norm=self.norm, aspect='equal')
 
-        # Draw gridlines for clarity
-        ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=0.5)
-        ax.set_xticks(np.arange(0, self.column, 10))
-        ax.set_yticks(np.arange(0, self.row, 10))
+        # Customize grid
+        ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=1)
+        plt.xticks(np.arange(-0.5, self.column, 1), [])
+        plt.yticks(np.arange(-0.5, self.row, 1), [])
 
-        ax.set_xticklabels([])
-        ax.set_yticklabels([])
+        # Create a list to store text objects
+        self.texts = []
+        for i in range(self.row):
+            for j in range(self.column):
+                if self.grid[i][j].type == self.forest:
+                    text = ax.text(j, i, "F", ha='center', va='center', color='black', fontsize=12,
+                                   fontweight='bold')
+                else:
+                    text = ax.text(j, i, "R", ha='center', va='center', color='black', fontsize=12,
+                                   fontweight='bold')
+                self.texts.append(text)
 
-        ax.tick_params(axis='both', direction='in', length=1, pad=3, which='major')
+        # Animation update function
+        def update(frame):
+            # Randomly set some forest nodes to burning
+            for _ in range(5):  # Number of cells to change per frame
+                row, col = random.randint(0, self.row - 1), random.randint(0, self.column - 1)
+                if self.grid[row][col].type == self.forest and self.grid[row][col].state == 0:
+                    self.update_node(row, col, 1)  # Change state to burning
 
+            # Update the image and the text based on the new data
+            cax.set_array(self.get_data())
+            for i, text in enumerate(self.texts):
+                row = i // self.column
+                col = i % self.column
+                # Keep letters visible even if the state is burning
+                text.set_text("F" if self.grid[row][col].type == self.forest else "R")
+
+            return [cax] + self.texts
+
+        # Set up animation
+        ani = FuncAnimation(fig, update, frames=100, interval=200, blit=True)
         plt.show()
 
-        # Later on, to change colors, you can update `data` with new values
-        # and replot with a new colormap or colors for each value.
 
-ngrid = Grid(500,500)
-ngrid.create_grid()
-
+# Create and animate the grid
+ngrid = Grid(10, 10)
+ngrid.display_grid()
