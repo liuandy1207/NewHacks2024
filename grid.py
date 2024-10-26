@@ -57,13 +57,13 @@ class Grid:
                 self.texts.append(text)
 
         # Animation update function
-        def update(frame, burningNodes):
-            simulate_fire(self.grid, burningNodes)
-            """
+        def update(frame):
+            #simulate_fire(self.grid, burningNodes)
+            
             self.grid[5][5].temp = 300
             self.grid[5][5].state = 1
             simulate_fire(self.grid, {(5, 5)})
-            """
+            
 
             # Update the image and the text based on the new data
             cax.set_array(self.get_data())
