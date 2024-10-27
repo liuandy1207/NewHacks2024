@@ -120,5 +120,5 @@ class Grid:
             return [cax] + self.texts
 
         # Set up animation
-        ani = FuncAnimation(fig, update, frames=100, interval=1000, blit=False)
+        ani = FuncAnimation(fig, update, frames=100, interval=500, blit=False)
         plt.show()
