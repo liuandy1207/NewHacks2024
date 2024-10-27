@@ -10,8 +10,7 @@ if __name__ == "__main__":
         for j in range(0, 20):
             Gridd.grid[i][j].temp = 30
             Gridd.grid[i][j].state = 0
-            Gridd.grid[i][j].type = Forest
-            Gridd.grid[i][j].fuel = Forest.fuel
+            Gridd.grid[i][j].type = Forest()
 
     startx = 15
     starty = 15

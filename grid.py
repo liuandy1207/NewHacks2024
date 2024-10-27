@@ -8,7 +8,6 @@ from forest import Forest
 from road import Road
 import random
 from simulate import simulate_fire
-import time
 
 class Grid:
     def __init__(self, row, column):
@@ -20,8 +19,8 @@ class Grid:
                     for _ in range(self.row)]
 
         # Define colormap
-        self.cmap = colors.ListedColormap(["lightgrey", "red", "brown"])
-        self.bounds = [0, 1, 2, 3]
+        self.cmap = colors.ListedColormap(["lightgrey", "red", "brown", "orange"])
+        self.bounds = [0, 1, 2, 3, 4]
         self.norm = colors.BoundaryNorm(self.bounds, self.cmap.N)
 
     def update_node(self, row, column, state):
@@ -83,6 +82,7 @@ class Grid:
             self.grid[5][5].state = 1
             simulate_fire(self.grid, {(5, 5)})
             '''
+            print(self.grid[15][14].temp)
             #print("above node:", self.grid[1][2])
             #print("below node:", self.grid[1][2])
 
@@ -98,5 +98,5 @@ class Grid:
             return [cax] + self.texts
 
         # Set up animation
-        ani = FuncAnimation(fig, update, frames=100, interval=2000, blit=False)
+        ani = FuncAnimation(fig, update, frames=100, interval=1000, blit=False)
         plt.show()

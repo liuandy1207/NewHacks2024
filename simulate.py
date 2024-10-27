@@ -10,58 +10,63 @@ def update_self(grid, x, y):
 
 def update_state(grid, x, y, burningNodes):
     try:
-        if grid[x][y].state == 0 and grid[x][y].temp > grid[x][y].type.ignitionTemp:
+        if grid[x][y].state == 0 and grid[x][y].temp > grid[x][y].type.ignitionTemp - 100:
+            grid[x][y].state = 4
+        if grid[x][y].state == 4 and grid[x][y].temp > grid[x][y].type.ignitionTemp:
             grid[x][y].state = 1
             burningNodes.add((x, y))
     except IndexError:
         pass
 
+fire_factor1 = 10
+fire_factor2 = 20
+
 def update_first_neighbours(grid, x, y):
     try:
         if (x - 1) >= 0 and (y - 1) >= 0:
-            grid[x-1][y-1].temp = round((grid[x-1][y-1].temp + grid[x][y].temp) / 2, 2)
+            grid[x-1][y-1].temp += abs(round((grid[x-1][y-1].temp - grid[x][y].temp) / fire_factor1, 2))
     except IndexError:
         pass
 
     try:
         if (x - 1) >= 0 and (y) >= 0:
-            grid[x-1][y].temp = round((grid[x-1][y].temp + grid[x][y].temp) / 2, 2)
+            grid[x-1][y].temp += abs(round((grid[x-1][y].temp - grid[x][y].temp) / fire_factor1, 2))
     except IndexError:
         pass
 
     try:
         if (x - 1) >= 0 and (y + 1) >= 0:
-            grid[x-1][y+1].temp = round((grid[x-1][y+1].temp + grid[x][y].temp) / 2, 2)
+            grid[x-1][y+1].temp += abs(round((grid[x-1][y+1].temp - grid[x][y].temp) / fire_factor1, 2))
     except IndexError:
         pass
 
     try:
         if (x >= 0) and (y - 1) >= 0:
-            grid[x][y-1].temp = round((grid[x][y-1].temp + grid[x][y].temp) / 2, 2)
+            grid[x][y-1].temp += abs(round((grid[x][y-1].temp - grid[x][y].temp) / fire_factor1, 2))
     except IndexError:
         pass
 
     try:
         if (x >= 0) and (y + 1) >= 0:
-            grid[x][y+1].temp = round((grid[x][y+1].temp + grid[x][y].temp) / 2, 2)
+            grid[x][y+1].temp += abs(round((grid[x][y+1].temp - grid[x][y].temp) / fire_factor1, 2))
     except IndexError:
         pass
 
     try:
         if (x + 1) >= 0 and (y - 1) >= 0:
-            grid[x+1][y-1].temp = round((grid[x+1][y-1].temp + grid[x][y].temp) / 2, 2)
+            grid[x+1][y-1].temp += abs(round((grid[x+1][y-1].temp - grid[x][y].temp) / fire_factor1, 2))
     except IndexError:
         pass
 
     try:
         if (x + 1) >= 0 and y >= 0:
-            grid[x+1][y].temp = round((grid[x+1][y].temp + grid[x][y].temp) / 2, 2)
+            grid[x+1][y].temp += abs(round((grid[x+1][y].temp - grid[x][y].temp) / fire_factor1, 2))
     except IndexError:
         pass
 
     try:
         if (x + 1) >= 0 and (y + 1) >= 0:
-            grid[x+1][y+1].temp = round((grid[x+1][y+1].temp + grid[x][y].temp) / 2, 2)
+            grid[x+1][y+1].temp += abs(round((grid[x+1][y+1].temp - grid[x][y].temp) / fire_factor1, 2))
     except IndexError:
         pass
 
@@ -69,49 +74,49 @@ def update_first_neighbours(grid, x, y):
 def update_second_neighbours(grid, x, y):
     try:
         if (x - 2) >= 0 and (y - 2) >= 0:
-            grid[x - 2][y - 2].temp = round((grid[x - 2][y - 2].temp + grid[x][y].temp) / 2, 2)
+            grid[x - 2][y - 2].temp += abs(round((grid[x - 2][y - 2].temp - grid[x][y].temp) / fire_factor2, 2))
     except IndexError:
         pass
 
     try:
         if (x - 2) >= 0 and (y) >= 0:
-            grid[x - 2][y].temp = round((grid[x - 2][y].temp + grid[x][y].temp) / 2, 2)
+            grid[x - 2][y].temp += abs(round((grid[x - 2][y].temp - grid[x][y].temp) / fire_factor2, 2))
     except IndexError:
         pass
 
     try:
         if (x - 2) >= 0 and (y + 2) >= 0:
-            grid[x - 2][y + 2].temp = round((grid[x - 2][y + 2].temp + grid[x][y].temp) / 2, 2)
+            grid[x - 2][y + 2].temp += abs(round((grid[x - 2][y + 2].temp - grid[x][y].temp) / fire_factor2, 2))
     except IndexError:
         pass
 
     try:
         if (x >= 0) and (y - 2) >= 0:
-            grid[x][y - 2].temp = round((grid[x][y - 2].temp + grid[x][y].temp) / 2, 2)
+            grid[x][y - 2].temp += abs(round((grid[x][y - 2].temp - grid[x][y].temp) / fire_factor2, 2))
     except IndexError:
         pass
 
     try:
         if (x >= 0) and (y + 2) >= 0:
-            grid[x][y + 2].temp = round((grid[x][y + 2].temp + grid[x][y].temp) / 2, 2)
+            grid[x][y + 2].temp += abs(round((grid[x][y + 2].temp - grid[x][y].temp) / fire_factor2, 2))
     except IndexError:
         pass
 
     try:
         if (x + 2) >= 0 and (y - 2) >= 0:
-            grid[x + 2][y - 2].temp = round((grid[x + 2][y - 2].temp + grid[x][y].temp) / 2, 2)
+            grid[x + 2][y - 2].temp += abs(round((grid[x + 2][y - 2].temp - grid[x][y].temp) / fire_factor2, 2))
     except IndexError:
         pass
 
     try:
         if (x + 2) >= 0 and (y) >= 0:
-            grid[x + 2][y].temp = round((grid[x + 1][y].temp + grid[x][y].temp) / 2, 2)
+            grid[x + 2][y].temp += abs(round((grid[x + 1][y].temp - grid[x][y].temp) / fire_factor2, 2))
     except IndexError:
         pass
 
     try:
         if (x + 2) >= 0 and (y + 2) >= 0:
-            grid[x + 2][y + 2].temp = round((grid[x + 2][y + 2].temp + grid[x][y].temp) / 2, 2)
+            grid[x + 2][y + 2].temp += abs(round((grid[x + 2][y + 2].temp - grid[x][y].temp) / fire_factor2, 2))
     except IndexError:
         pass
 

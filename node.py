@@ -2,6 +2,7 @@
 This file defines the Node class for our program.
 """
 from terrain import Terrain
+import random
 
 class Node:
     """
