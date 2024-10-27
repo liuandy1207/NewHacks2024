@@ -13,7 +13,7 @@ class Grid:
         self.column = column
         self.forest = Forest()
         self.road = Road()
-        self.grid = [[Node(0, 30, Forest) for _ in range(self.column)]
+        self.grid = [[Node(0, 30, self.forest) for _ in range(self.column)]
                     for _ in range(self.row)]
 
         # Define colormap
@@ -49,12 +49,12 @@ class Grid:
         self.texts = []
         for i in range(self.row):
             for j in range(self.column):
-                if self.grid[i][j].type == self.forest:
-                    text = ax.text(j, i, "F", ha='center', va='center', color='black', fontsize=12,
+                #if self.grid[i][j].type == self.forest:
+                text = ax.text(j, i, "F", ha='center', va='center', color='black', fontsize=12,
                                    fontweight='bold')
-                else:
+                '''else:
                     text = ax.text(j, i, "R", ha='center', va='center', color='black', fontsize=12,
-                                   fontweight='bold')
+                                   fontweight='bold')'''
                 self.texts.append(text)
 
         # Animation update function
@@ -74,7 +74,7 @@ class Grid:
                 row = i // self.column
                 col = i % self.column
                 # Keep letters visible even if the state is burning
-                text.set_text("F" if self.grid[row][col].type == self.forest else "R")
+                text.set_text("F")
                 text.set_fontsize(5)
 
             return [cax] + self.texts
