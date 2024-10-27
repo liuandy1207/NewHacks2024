@@ -14,7 +14,7 @@ class Grid:
         self.forest = Forest()
         self.road = Road()
         self.grid = [[Node(0, random.choice([self.forest]), 30) for _ in range(self.column)]
-                     for _ in range(self.row)]
+                    for _ in range(self.row)]
 
         # Define colormap
         self.cmap = colors.ListedColormap(["lightgrey", "red"])

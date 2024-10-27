@@ -10,8 +10,5 @@ class Terrain:
     fuel: float
     ignitionTemp: float
 
-    def updateTemp(self, temp):
-        raise NotImplementedError
-
-    def updateFuel(self, fuel):
+    def updateTempFuel(self, temp, fuel):
         raise NotImplementedError
