@@ -17,8 +17,8 @@ class Grid:
                     for _ in range(self.row)]
 
         # Define colormap
-        self.cmap = colors.ListedColormap(["lightgrey", "red"])
-        self.bounds = [0, 1]
+        self.cmap = colors.ListedColormap(["lightgrey", "red", "brown"])
+        self.bounds = [0, 1, 2, 3]
         self.norm = colors.BoundaryNorm(self.bounds, self.cmap.N)
 
     def update_node(self, row, column, state):
@@ -31,7 +31,7 @@ class Grid:
             for j in range(self.column):
                 data[i][j] = self.grid[i][j].state
         return data
-        
+
 
     def display_grid(self, burningNodes):
         # Initial setup of the plot
@@ -67,7 +67,7 @@ class Grid:
             '''
             #print("above node:", self.grid[1][2])
             #print("below node:", self.grid[1][2])
-            
+
             # Update the image and the text based on the new data
             cax.set_array(self.get_data())
             for i, text in enumerate(self.texts):
@@ -82,8 +82,3 @@ class Grid:
         # Set up animation
         ani = FuncAnimation(fig, update, frames=100, interval=2000, blit=False)
         plt.show()
-
-
-# Create and animate the grid
-#ngrid = Grid(10, 10)
-#ngrid.display_grid()

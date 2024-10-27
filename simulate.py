@@ -1,18 +1,16 @@
 """
 This Python file simulates the fire.
 """
-#from grid import Grid
-#from forest import Forest
+# from grid import Grid
+# from forest import Forest
 
 def update_self(grid, x, y):
-    if grid[x][y].state == 1:
-        grid[x][y].temp += 15
-        grid[x][y].fuel -= 1
-    print(grid[x][y].temp)
+    grid[x][y].type.updateTempFuel(grid[x][y])
+    # print(grid[x][y].state)
 
 def update_state(grid, x, y, burningNodes):
     try:
-        if grid[x][y].temp > grid[x][y].type.ignitionTemp:
+        if grid[x][y].state == 0 and grid[x][y].temp > grid[x][y].type.ignitionTemp:
             grid[x][y].state = 1
             burningNodes.add((x, y))
     except IndexError:
