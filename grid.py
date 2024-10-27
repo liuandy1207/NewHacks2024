@@ -6,6 +6,7 @@ from forest import Forest
 from road import Road
 import random
 from simulate import simulate_fire
+import time
 
 class Grid:
     def __init__(self, row, column):
@@ -50,7 +51,7 @@ class Grid:
         for i in range(self.row):
             for j in range(self.column):
                 #if self.grid[i][j].type == self.forest:
-                text = ax.text(j, i, "F", ha='center', va='center', color='black', fontsize=12,
+                text = ax.text(j, i, "F", ha='center', va='center', color='black', fontsize=5,
                                    fontweight='bold')
                 '''else:
                     text = ax.text(j, i, "R", ha='center', va='center', color='black', fontsize=12,
