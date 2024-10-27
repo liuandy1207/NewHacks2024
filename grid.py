@@ -51,6 +51,7 @@ class Grid:
 
         color_legend_handles = [
             Patch(color="lightgrey", label="Not Burning"),
+            Patch(color="Orange", label="Close to Burning"),
             Patch(color="red", label="Burning"),
             Patch(color="brown", label="Burnt")]
         
