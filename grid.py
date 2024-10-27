@@ -39,7 +39,7 @@ class Grid:
 
     def display_grid(self, burningNodes):
         # Initial setup of the plot
-        fig, ax = plt.subplots(figsize=(10, 8))
+        fig, ax = plt.subplots(figsize=(12, 8))
         data = self.get_data()
         cax = ax.imshow(data, cmap=self.cmap, norm=self.norm, aspect='equal')
 
