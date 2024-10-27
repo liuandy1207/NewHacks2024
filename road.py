@@ -1,13 +1,15 @@
 from terrain import Terrain
 
 class Road(Terrain):
-    fuel = 0
-    ignitionTemp = 10000
+
+    def __init__(self):
+        self.fuel = 10
+        self.ignitionTemp = 1200
 
     @staticmethod
     def updateTempFuel(node):
-        node.temp = min(1200, node.temp + 15)
-        node.fuel = max(0, node.fuel - 50)
+        node.temp = min(1300, node.temp + 5)
+        node.fuel = max(0, node.fuel - 1)
 
         if node.fuel == 0:
             node.state = 2

@@ -15,7 +15,7 @@ class Forest(Terrain):
 
     @staticmethod
     def updateTempFuel(node):
-        node.temp = min(1200, node.temp + 15)
+        node.temp = min(1300, node.temp + 50)
         node.fuel = max(0, node.fuel - 25)
 
         if node.fuel == 0:

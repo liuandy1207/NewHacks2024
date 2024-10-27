@@ -6,6 +6,8 @@ import numpy as np
 from node import Node
 from forest import Forest
 from road import Road
+from building import Building
+from water import Water
 import random
 from simulate import simulate_fire
 
@@ -45,7 +47,7 @@ class Grid:
         ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=0.1)
         plt.xticks(np.arange(-0.5, self.column, 1), [])
         plt.yticks(np.arange(-0.5, self.row, 1), [])
-        ax.tick_params(axis='both', direction='in', length=5, pad=3, which='major')
+        ax.tick_params(axis='both', direction='in', length=0.1, pad=3, which='major')
 
         color_legend_handles = [
             Patch(color="lightgrey", label="Not Burning"),
@@ -54,6 +56,8 @@ class Grid:
         
         symbol_legend_handles = [
             Line2D([0], [0], marker='None', linestyle='None', color='b', markerfacecolor='black', markersize=10, label='F - Forest'),
+            Line2D([0], [0], marker='None', linestyle='None', color='b', markerfacecolor='black', markersize=10, label='B - Building'),
+            Line2D([0], [0], marker='None', linestyle='None', color='b', markerfacecolor='black', markersize=10, label='W - Water'),
             Line2D([0], [0], marker='None', linestyle='None', color='w', markerfacecolor='green', markersize=10, label='R - Road')]
         # Add the legend to the plot
         color_legend = ax.legend(handles=color_legend_handles + symbol_legend_handles, title="Legend",
@@ -66,13 +70,20 @@ class Grid:
         self.texts = []
         for i in range(self.row):
             for j in range(self.column):
-                #if self.grid[i][j].type == self.forest:
-                text = ax.text(j, i, "F", ha='center', va='center', color='black', fontsize=5,
-                                   fontweight='bold')
-                '''else:
-                    text = ax.text(j, i, "R", ha='center', va='center', color='black', fontsize=12,
-                                   fontweight='bold')'''
+                letter = ""
+                if self.grid[i][j].type == Forest:
+                    letter = "F"
+                elif self.grid[i][j].type == Water:
+                    letter = "W"
+                elif self.grid[i][j].type == Building:
+                    letter = "B"
+                elif self.grid[i][j].type == Road:
+                    letter = "R"
+
+                # Create the text object and store it
+                text = ax.text(j, i, letter, ha='center', va='center', color='black', fontsize=10, fontweight='bold')
                 self.texts.append(text)
+
 
         # Animation update function
         def update(frame):
@@ -82,7 +93,6 @@ class Grid:
             self.grid[5][5].state = 1
             simulate_fire(self.grid, {(5, 5)})
             '''
-            print(self.grid[15][14].temp)
             #print("above node:", self.grid[1][2])
             #print("below node:", self.grid[1][2])
 
@@ -91,8 +101,19 @@ class Grid:
             for i, text in enumerate(self.texts):
                 row = i // self.column
                 col = i % self.column
+
                 # Keep letters visible even if the state is burning
-                text.set_text("F")
+                #text.set_text("F")
+                if isinstance(self.grid[row][col].type, Forest):
+                    text.set_text("F")
+                elif isinstance(self.grid[row][col].type, Water):
+                    text.set_text("W")
+                elif isinstance(self.grid[row][col].type, Building):
+                    text.set_text("B")
+                elif isinstance(self.grid[row][col].type, Road):
+                    text.set_text("R")
+                    
+
                 text.set_fontsize(5)
 
             return [cax] + self.texts
