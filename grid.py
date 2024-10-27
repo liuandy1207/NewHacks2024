@@ -13,7 +13,7 @@ class Grid:
         self.column = column
         self.forest = Forest()
         self.road = Road()
-        self.grid = [[Node(0, random.choice([self.forest]), 30) for _ in range(self.column)]
+        self.grid = [[Node(0, 30, Forest) for _ in range(self.column)]
                     for _ in range(self.row)]
 
         # Define colormap

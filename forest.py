@@ -8,6 +8,5 @@ class Forest(Terrain):
     Fuel is represented in kg per 100m^2 (the size of one node). 
     Ignition temperature is represented in degrees Celsius.
     """
-    def __init__(self):
-        self.fuel = 750
-        self.ignitionTemp = 450
+    fuel = 750
+    ignitionTemp = 450

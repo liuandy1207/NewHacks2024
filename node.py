@@ -9,16 +9,18 @@ class Node:
     """
     state: int
     temp: float
-    elevation: int
-    fuel: float
+    #elevation: int
     type: Terrain
-    neighbours = set
+    fuel: float
+    #type: Terrain
+    #neighbours = set
 
-    def __init__(self, state, type, temp):
+    def __init__(self, state, temp, type):
         self.temp = temp
         '''self.elevation = elevation'''
         self.type = type
         self.state = state
+        self.fuel = self.type.fuel
         #self.neighbours = neighbours
         '''
         self.setFuel()'''

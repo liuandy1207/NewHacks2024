@@ -2,6 +2,13 @@
 This Python file simulates the fire.
 """
 #from grid import Grid
+#from forest import Forest
+
+def update_self(grid, x, y):
+    if grid[x][y].state == 1:
+        grid[x][y].temp += 15
+        grid[x][y].fuel -= 1
+    print(grid[x][y].temp)
 
 def update_state(grid, x, y, burningNodes):
     try:
@@ -117,7 +124,7 @@ def simulate_fire(grid, burningNodes: set):
         for x, y in burningNodes:
             # node.fuel = node.type.updateFuel(node.fuel)
             # node.temp = node.type.updateTemp(node.temp)
-
+            update_self(grid, x, y)
             update_first_neighbours(grid, x, y)
             update_second_neighbours(grid, x, y)
 
