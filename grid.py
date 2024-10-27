@@ -1,5 +1,7 @@
 from matplotlib import pyplot as plt, colors
 from matplotlib.animation import FuncAnimation
+from matplotlib.patches import Patch
+from matplotlib.lines import Line2D
 import numpy as np
 from node import Node
 from forest import Forest
@@ -36,7 +38,7 @@ class Grid:
 
     def display_grid(self, burningNodes):
         # Initial setup of the plot
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(10, 8))
         data = self.get_data()
         cax = ax.imshow(data, cmap=self.cmap, norm=self.norm, aspect='equal')
 
@@ -45,6 +47,21 @@ class Grid:
         plt.xticks(np.arange(-0.5, self.column, 1), [])
         plt.yticks(np.arange(-0.5, self.row, 1), [])
         ax.tick_params(axis='both', direction='in', length=5, pad=3, which='major')
+
+        color_legend_handles = [
+            Patch(color="lightgrey", label="Not Burning"),
+            Patch(color="red", label="Burning"),
+            Patch(color="brown", label="Burnt")]
+        
+        symbol_legend_handles = [
+            Line2D([0], [0], marker='None', linestyle='None', color='b', markerfacecolor='black', markersize=10, label='F - Forest'),
+            Line2D([0], [0], marker='None', linestyle='None', color='w', markerfacecolor='green', markersize=10, label='R - Road')]
+        # Add the legend to the plot
+        color_legend = ax.legend(handles=color_legend_handles + symbol_legend_handles, title="Legend",
+                             loc="upper left", bbox_to_anchor=(1.05, 1), borderaxespad=0.)
+
+        
+
 
         # Create a list to store text objects
         self.texts = []
