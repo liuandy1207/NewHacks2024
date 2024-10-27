@@ -1,8 +1,8 @@
 from terrain import Terrain
 
-class Road(Terrain):
-    fuel = 0
-    ignitionTemp = 10000
+class Building(Terrain):
+    fuel = 1500
+    ignitionTemp = 1100
 
     @staticmethod
     def updateTempFuel(node):
