@@ -1,5 +1,6 @@
 from grid import Grid
 from copy import deepcopy
+from forest import Forest
 
 
 if __name__ == "__main__":
@@ -10,9 +11,11 @@ if __name__ == "__main__":
 
     for i in range(0, 20):
         for j in range(0, 20):
-            Gridd.grid[1][1].temp = 30
-            Gridd.grid[1][1].state = 0
+            Gridd.grid[i][j].temp = 30
+            Gridd.grid[i][j].state = 0
+            Gridd.grid[i][j].type = Forest
+            Gridd.grid[i][j].fuel = Forest.fuel
 
-    Gridd.grid[startx][starty].temp = 200
+    Gridd.grid[startx][starty].temp = 1000
     Gridd.grid[startx][starty].state = 1
     Gridd.display_grid(burningNodes={(startx,starty)})
