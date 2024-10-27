@@ -42,7 +42,6 @@ class Grid:
         ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=1)
         plt.xticks(np.arange(-0.5, self.column, 1), [])
         plt.yticks(np.arange(-0.5, self.row, 1), [])
-        ax.tick_params(axis='both', direction='in', length=5, pad=3, which='major')
 
         # Create a list to store text objects
         self.texts = []
@@ -58,13 +57,9 @@ class Grid:
 
         # Animation update function
         def update(frame):
-            #simulate_fire(self.grid, burningNodes)
-            
             self.grid[5][5].temp = 300
             self.grid[5][5].state = 1
             simulate_fire(self.grid, {(5, 5)})
-            
-
             # Update the image and the text based on the new data
             cax.set_array(self.get_data())
             for i, text in enumerate(self.texts):
