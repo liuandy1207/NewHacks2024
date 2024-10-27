@@ -31,15 +31,16 @@ class Grid:
             for j in range(self.column):
                 data[i][j] = self.grid[i][j].state
         return data
+        
 
-    def display_grid(self):
+    def display_grid(self, burningNodes):
         # Initial setup of the plot
         fig, ax = plt.subplots()
         data = self.get_data()
         cax = ax.imshow(data, cmap=self.cmap, norm=self.norm, aspect='equal')
 
         # Customize grid
-        ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=1)
+        ax.grid(which='major', axis='both', linestyle='-', color='k', linewidth=0.1)
         plt.xticks(np.arange(-0.5, self.column, 1), [])
         plt.yticks(np.arange(-0.5, self.row, 1), [])
         ax.tick_params(axis='both', direction='in', length=5, pad=3, which='major')
@@ -58,13 +59,15 @@ class Grid:
 
         # Animation update function
         def update(frame):
-            #simulate_fire(self.grid, burningNodes)
-            
+            simulate_fire(self.grid, burningNodes)
+            '''
             self.grid[5][5].temp = 300
             self.grid[5][5].state = 1
             simulate_fire(self.grid, {(5, 5)})
+            '''
+            #print("above node:", self.grid[1][2])
+            #print("below node:", self.grid[1][2])
             
-
             # Update the image and the text based on the new data
             cax.set_array(self.get_data())
             for i, text in enumerate(self.texts):
@@ -72,14 +75,15 @@ class Grid:
                 col = i % self.column
                 # Keep letters visible even if the state is burning
                 text.set_text("F" if self.grid[row][col].type == self.forest else "R")
+                text.set_fontsize(5)
 
             return [cax] + self.texts
 
         # Set up animation
-        ani = FuncAnimation(fig, update, frames=100, interval=200, blit=True)
+        ani = FuncAnimation(fig, update, frames=100, interval=2000, blit=False)
         plt.show()
 
 
 # Create and animate the grid
-ngrid = Grid(10, 10)
-ngrid.display_grid()
+#ngrid = Grid(10, 10)
+#ngrid.display_grid()
